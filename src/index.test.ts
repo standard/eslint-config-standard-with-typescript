@@ -35,6 +35,7 @@ test('export', (t): void => {
         rules: {
           'brace-style': 'off',
           camelcase: 'off',
+          'comma-dangle': 'off',
           'comma-spacing': 'off',
           'default-param-last': 'off',
           'dot-notation': 'off',
@@ -44,6 +45,9 @@ test('export', (t): void => {
           'lines-between-class-members': 'off',
           'no-array-constructor': 'off',
           'no-dupe-class-members': 'off',
+          'no-extra-parens': 'off',
+          'no-implied-eval': 'off',
+          'no-loss-of-precision': 'off',
           'no-redeclare': 'off',
           'no-throw-literal': 'off',
           'no-undef': 'off',
@@ -52,12 +56,24 @@ test('export', (t): void => {
           'no-unused-expressions': 'off',
           'no-useless-constructor': 'off',
           'no-void': ['error', { allowAsStatement: true }],
+          'object-curly-spacing': 'off',
           quotes: 'off',
           semi: 'off',
           'space-before-function-paren': 'off',
+          'space-infix-ops': 'off',
           '@typescript-eslint/adjacent-overload-signatures': 'error',
           '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
           '@typescript-eslint/brace-style': ['error', '1tbs', { allowSingleLine: true }],
+          '@typescript-eslint/comma-dangle': [
+            'error',
+            {
+              arrays: 'never',
+              exports: 'never',
+              functions: 'never',
+              imports: 'never',
+              objects: 'never'
+            }
+          ],
           '@typescript-eslint/comma-spacing': ['error', { before: false, after: true }],
           '@typescript-eslint/consistent-type-assertions': [
             'error',
@@ -114,11 +130,16 @@ test('export', (t): void => {
           '@typescript-eslint/no-dynamic-delete': 'error',
           '@typescript-eslint/no-empty-interface': ['error', { allowSingleExtends: true }],
           '@typescript-eslint/no-extra-non-null-assertion': 'error',
+          '@typescript-eslint/no-extra-parens': [
+            'error',
+            'functions'
+          ],
           '@typescript-eslint/no-extraneous-class': ['error', { allowWithDecorator: true }],
           '@typescript-eslint/no-floating-promises': 'error',
           '@typescript-eslint/no-for-in-array': 'error',
           '@typescript-eslint/no-implied-eval': 'error',
           '@typescript-eslint/no-invalid-void-type': 'error',
+          '@typescript-eslint/no-loss-of-precision': 'error',
           '@typescript-eslint/no-misused-new': 'error',
           '@typescript-eslint/no-misused-promises': 'error',
           '@typescript-eslint/no-namespace': 'error',
@@ -134,6 +155,10 @@ test('export', (t): void => {
           '@typescript-eslint/no-unused-expressions': ['error', { allowShortCircuit: true, allowTaggedTemplates: true, allowTernary: true }],
           '@typescript-eslint/no-useless-constructor': 'error',
           '@typescript-eslint/no-var-requires': 'error',
+          '@typescript-eslint/object-curly-spacing': [
+            'error',
+            'always'
+          ],
           '@typescript-eslint/prefer-function-type': 'error',
           '@typescript-eslint/prefer-includes': 'error',
           '@typescript-eslint/prefer-nullish-coalescing': ['error', { ignoreConditionalTests: false, ignoreMixedLogicalExpressions: false }],
@@ -149,6 +174,7 @@ test('export', (t): void => {
           '@typescript-eslint/return-await': ['error', 'always'],
           '@typescript-eslint/semi': ['error', 'never'],
           '@typescript-eslint/space-before-function-paren': ['error', 'always'],
+          '@typescript-eslint/space-infix-ops': 'error',
           '@typescript-eslint/strict-boolean-expressions': ['error', {
             allowString: false,
             allowNumber: false,
@@ -192,7 +218,7 @@ test('Own peerDependencies include those of eslint-config-standard', async (t) =
       const name = _name as keyof typeof standardPkg.peerDependencies
       const ourDep = ourPeerDeps[name]
       const ourRange = ourDep.split('>=')[1]
-      const standardRange = standardDep.split('^')[1]
+      const standardRange = standardDep.split('^')[1].split('||')[0].trim()
       t.is(ourRange, standardRange)
     })
 })
