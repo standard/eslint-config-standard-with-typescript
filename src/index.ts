@@ -2,36 +2,61 @@ import configStandard from './eslint-config-standard'
 import { Linter } from 'eslint'
 
 const equivalents = [
-  'comma-spacing',
-  'dot-notation',
   'brace-style',
+  'comma-dangle',
+  'comma-spacing',
+  'default-param-last',
+  'dot-notation',
   'func-call-spacing',
   'indent',
+  'init-declarations',
   'keyword-spacing',
   'lines-between-class-members',
   'no-array-constructor',
   'no-dupe-class-members',
+  'no-duplicate-imports',
+  'no-empty-function',
+  'no-extra-parens',
+  'no-extra-semi',
+  'no-implied-eval',
+  'no-invalid-this',
+  'no-loop-func',
+  'no-loss-of-precision',
+  'no-magic-numbers',
   'no-redeclare',
+  'no-shadow',
   'no-throw-literal',
-  'no-unused-vars',
   'no-unused-expressions',
+  'no-unused-vars',
+  'no-use-before-define',
   'no-useless-constructor',
+  'object-curly-spacing',
   'quotes',
+  'require-await',
   'semi',
-  'space-before-function-paren'
+  'space-before-function-paren',
+  'space-infix-ops'
 ] as const
 
-const ruleFromStandard = (name: string): Linter.RuleEntry => {
-  if (configStandard.rules === undefined) throw new Error()
-  const rule = configStandard.rules[name]
-  if (rule === undefined) throw new Error()
+const rawRuleFromStandard = (name: string): undefined|Linter.RuleEntry => {
+  if (configStandard.rules === undefined) return undefined
+  return configStandard.rules[name]
+}
+
+const ruleFromStandard = (name: string): undefined|Linter.RuleEntry => {
+  const rule = rawRuleFromStandard(name)
+  if (rule === undefined) return undefined
   if (typeof rule !== 'object') return rule
   return JSON.parse(JSON.stringify(rule))
 }
 
+const disableEquivalentsRule = (name: string): undefined|'off' => {
+  return rawRuleFromStandard(name) !== undefined ? 'off' : undefined
+}
+
 function fromEntries<T> (iterable: Array<[string, T]>): { [key: string]: T } {
   return [...iterable].reduce<{ [key: string]: T }>((obj, [key, val]) => {
-    obj[key] = val
+    if (val !== undefined) obj[key] = val
     return obj
   }, {})
 }
@@ -48,7 +73,7 @@ const config: Linter.Config = {
         'no-undef': 'off',
 
         // Rules replaced by @typescript-eslint versions:
-        ...fromEntries(equivalents.map((name) => [name, 'off'])),
+        ...fromEntries(equivalents.map((name) => [name, disableEquivalentsRule(name)])),
         camelcase: 'off',
         'default-param-last': 'off',
         'no-use-before-define': 'off',
@@ -102,7 +127,6 @@ const config: Linter.Config = {
         '@typescript-eslint/no-extraneous-class': ['error', { allowWithDecorator: true }],
         '@typescript-eslint/no-floating-promises': 'error',
         '@typescript-eslint/no-for-in-array': 'error',
-        '@typescript-eslint/no-implied-eval': 'error',
         '@typescript-eslint/no-invalid-void-type': 'error',
         '@typescript-eslint/no-misused-new': 'error',
         '@typescript-eslint/no-misused-promises': 'error',
