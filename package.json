@@ -72,7 +72,7 @@
     "@commitlint/travis-cli": "12.1.4",
     "@types/eslint": "7.28.0",
     "@types/node": "16.3.3",
-    "@typescript-eslint/eslint-plugin": "4.0.1",
+    "@typescript-eslint/eslint-plugin": "4.28.3",
     "ava": "3.15.0",
     "editorconfig-checker": "4.0.2",
     "eslint": "7.30.0",
