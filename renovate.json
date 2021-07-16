@@ -1,5 +1,0 @@
-{
-  "extends": [
-    "github>mightyiam/renovate-config:js-lib"
-  ]
-}
